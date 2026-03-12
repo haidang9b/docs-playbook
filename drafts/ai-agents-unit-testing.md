@@ -1,7 +1,8 @@
 ---
-title: "Build Your Own AI Agent Skill for .NET Unit Testing"
-description: "Learn what Claude Agent Skills are, how their 3-level loading architecture works, and how to create a custom dotnet-unit-testing skill that generates xUnit tests on demand—step by step."
-keywords: ["Claude Agent Skills", "AI agent .NET unit testing", "custom skill SKILL.md"]
+title: "AI Agent Skill for .NET Unit Testing: Build It Step by Step"
+description: "Learn how to create a custom Claude AI Agent Skill for .NET unit testing. Step-by-step guide to writing SKILL.md files that generate xUnit and NSubstitute tests automatically."
+focus_keyphrase: "AI agent skill .NET unit testing"
+keywords: ["AI agent skill .NET unit testing", "Claude Agent Skills", "SKILL.md tutorial", "xUnit test generation", "NSubstitute mocking"]
 author: ""
 date: "2025-03-12"
 ---
