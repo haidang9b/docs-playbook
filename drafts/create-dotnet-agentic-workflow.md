@@ -26,7 +26,7 @@ By the end, you will have:
 A **workflow file** is a Markdown document stored in `.agent/workflows/` that gives your AI agent a repeatable, step-by-step playbook. Unlike a single prompt, a workflow:
 
 - **Sequences multiple phases** — each building on the previous output
-- **Integrates AI Skills** — calling specialised skills (`/dotnet-code-review`, `/dotnet-unit-testing`) at the right moment
+- **Integrates AI Skills** — calling specialised skills (`/dotnet-requirements-analysis`, `/dotnet-code-review`, `/dotnet-unit-testing`) at the right moment
 - **Includes human checkpoints** — so you review and guide at key decision points
 - **Persists in your repository** — every team member gets the same playbook automatically
 
@@ -47,14 +47,22 @@ Before writing a single line, let's look at the complete directory structure you
 ```
 .agent/
 ├── workflows/
-│   └── dotnet-feature-workflow.md   ← orchestrates all phases end-to-end
+│   └── dotnet-feature-workflow.md          ← orchestrates all phases end-to-end
 └── skills/
-    ├── dotnet-code-review/          ← reviews C# code against 18 standard rules
-    │   ├── SKILL.md                 ← skill entry point: rules summary + report format
-    │   └── RULES.md                 ← reference: full rule definitions with C# examples
-    └── dotnet-unit-testing/         ← generates xUnit tests with NSubstitute
-        ├── SKILL.md                 ← skill entry point: test template + naming conventions
-        └── PATTERNS.md              ← reference: advanced mocking patterns + anti-patterns
+    ├── dotnet-requirements-analysis/       ← parses a feature request into structured analysis
+    │   └── SKILL.md
+    ├── dotnet-technical-design/            ← converts analysis into C# interfaces + DTOs
+    │   └── SKILL.md
+    ├── dotnet-implementation/              ← generates a compilable C# service class
+    │   └── SKILL.md
+    ├── dotnet-code-review/                 ← reviews C# code against 18 standard rules
+    │   ├── SKILL.md
+    │   └── RULES.md
+    ├── dotnet-test-cases/                  ← generates and verifies a test case matrix
+    │   └── SKILL.md
+    └── dotnet-unit-testing/                ← generates xUnit tests from an approved matrix
+        ├── SKILL.md
+        └── PATTERNS.md
 ```
 
 ### How a skill is invoked
@@ -66,40 +74,16 @@ When a workflow (or you directly) types `/dotnet-code-review`, the AI agent:
 
 This is the **progressive disclosure** model: SKILL.md is a lightweight entry point, and heavier reference files are paged in on demand.
 
-### The two skills used in this workflow
+### Skills used in this workflow
 
-#### `/dotnet-code-review`
-
-```
-dotnet-code-review/
-├── SKILL.md      ← Level 1+2: 18-rule summary, report format, verdict system
-└── RULES.md      ← Level 3: full rule definitions with before/after C# examples
-```
-
-The skill checks code against **18 rules** in five categories and outputs a structured report:
-
-```
-## Code Review Report
-**File:** OrderService.cs
-**Verdict:** ✅ PASS | ⚠️ PASS WITH NOTES | ❌ FAIL
-
-### 🔴 Blockers  (must fix before merge)
-- [S2] Constructor takes SqlOrderRepository (concrete) — use IOrderRepository instead — Line 12
-
-### 🟡 Majors  (should fix before merge)
-### 🔵 Minors  (suggested improvements)
-### ✅ Passed rules
-```
-
-#### `/dotnet-unit-testing`
-
-```
-dotnet-unit-testing/
-├── SKILL.md      ← Level 1+2: framework detection, canonical test template, naming rules
-└── PATTERNS.md   ← Level 3: NSubstitute/Moq patterns, edge-case table, anti-patterns
-```
-
-The skill auto-detects the test framework and mocking library already in your project and generates a complete xUnit test class following `MethodName_Scenario_ExpectedOutcome` naming.
+| Phase | Skill | What it does |
+|---|---|---|
+| Phase 1 | `/dotnet-requirements-analysis` | Parses the feature request into entities, rules, constraints, edge cases |
+| Phase 2 | `/dotnet-technical-design` | Produces C# interfaces, DTOs, and architecture decisions |
+| Phase 3 | `/dotnet-implementation` | Generates a compilable service class from approved contracts |
+| Phase 4 | `/dotnet-code-review` | Reviews the class against 18 rules — Blocker / Major / Minor report |
+| Phase 5a/5b | `/dotnet-test-cases` | Generates a test case matrix and verifies coverage against Phase 1 |
+| Phase 5c | `/dotnet-unit-testing` | Converts the approved matrix into xUnit + NSubstitute test code |
 
 ---
 
@@ -132,14 +116,16 @@ After the frontmatter, add a human-readable overview. This explains the workflow
 ## Overview
 This workflow guides an AI agent through a complete .NET feature implementation cycle. It transforms a raw requirement or user story into production-ready code with unit tests, using structured phases and human review checkpoints throughout.
 
-**Skills used:** `dotnet-code-review`, `dotnet-unit-testing`
-**Output:** C# service class + Code Review Report + xUnit test suite
+**Skills used:** `dotnet-requirements-analysis`, `dotnet-technical-design`, `dotnet-implementation`, `dotnet-code-review`, `dotnet-test-cases`, `dotnet-unit-testing`
+**Output:** Structured analysis + C# interfaces + service class + Code Review Report + test suite
 **Target audience:** Intermediate to senior .NET developers
 ```
 
 ---
 
 ## Step 3: Add Phase 1 — Analyze Requirements
+
+> **Skill:** `/dotnet-requirements-analysis`
 
 The first phase is the most important. A structured requirements analysis locks in shared understanding before any code is written. Errors caught here cost minutes to fix; errors found in Phase 4 cost hours.
 
@@ -159,12 +145,10 @@ Parse the feature request and produce a structured breakdown that all subsequent
   * **Open Questions:** Flag anything the requirement does not clarify.
 
 * **2. Execute Requirements Capture:**
-  Paste the raw requirement text and run the following prompt.
-  > **🤖 AI Workflow Prompt:**
+  Paste the raw requirement text and invoke the skill.
+  > **🤖 AI Workflow (/dotnet-requirements-analysis skill):**
   > ```plaintext
-  > You are a senior .NET requirements analyst.
-  > Produce a structured analysis with these sections:
-  > Domain Entities | Business Rules | Input Constraints | Edge Cases | Open Questions.
+  > /dotnet-requirements-analysis
   > Requirement: [paste requirement here]
   > ```
 
@@ -178,6 +162,8 @@ Parse the feature request and produce a structured breakdown that all subsequent
 
 ## Step 4: Add Phase 2 — Technical Notes
 
+> **Skill:** `/dotnet-technical-design`
+
 The Architect phase converts the analysis into concrete C# contracts — interfaces, DTOs, and explicit architecture decisions. This is the "design before build" gate that prevents costly refactors.
 
 ```markdown
@@ -187,15 +173,9 @@ The Architect phase converts the analysis into concrete C# contracts — interfa
 Translate the Phase 1 analysis into C# interface contracts and architecture decisions. No implementation code is written in this phase.
 
 * **1. Design the Service Layer:**
-  > **🤖 AI Workflow Prompt:**
+  > **🤖 AI Workflow (/dotnet-technical-design skill):**
   > ```plaintext
-  > You are a senior .NET architect.
-  > Using the Phase 1 analysis below, produce:
-  > 1. C# interfaces with XML doc comments for all public members
-  > 2. C# records or classes for all DTOs
-  > 3. Architecture decisions (validation strategy, exception handling, async usage)
-  > Do NOT write implementation code yet.
-  >
+  > /dotnet-technical-design
   > [Paste Phase 1 output here]
   > ```
 
@@ -211,6 +191,8 @@ Translate the Phase 1 analysis into C# interface contracts and architecture deci
 
 ## Step 5: Add Phase 3 — Implement Service
 
+> **Skill:** `/dotnet-implementation`
+
 The Developer phase takes the contracts from Phase 2 and produces a complete, compilable service class. The AI has no ambiguity — interfaces, DTOs, and architecture decisions are all provided explicitly.
 
 ```markdown
@@ -220,14 +202,9 @@ The Developer phase takes the contracts from Phase 2 and produces a complete, co
 Write the full C# service implementation using the contracts and decisions from Phase 2.
 
 * **1. Generate the Service Class:**
-  > **🤖 AI Workflow Prompt:**
+  > **🤖 AI Workflow (/dotnet-implementation skill):**
   > ```plaintext
-  > You are a senior .NET developer (.NET 9).
-  > Implement the service class using the interfaces and DTOs below.
-  > Apply all business rules and architecture decisions from the analysis.
-  > Include XML doc comments on the class and all public methods.
-  > Do NOT write unit tests yet.
-  >
+  > /dotnet-implementation
   > [Paste Phase 2 output here]
   > ```
 
@@ -284,6 +261,8 @@ No unit tests are written until the implementation achieves at least PASS WITH N
 
 ## Step 7a: Add Phase 5a — Generate Test Cases
 
+> **Skill:** `/dotnet-test-cases`
+
 Before writing a single line of xUnit code, ask the AI to produce a **test case matrix** — a plain-language table listing every scenario that must be tested. This separates *what* to test from *how* to implement it.
 
 ```markdown
@@ -293,15 +272,9 @@ Before writing a single line of xUnit code, ask the AI to produce a **test case 
 Before writing any xUnit code, produce a test case matrix from the Phase 1 analysis.
 
 * **1. Generate the Test Case Matrix:**
-  > **🤖 AI Workflow Prompt:**
+  > **🤖 AI Workflow (/dotnet-test-cases skill):**
   > ```plaintext
-  > You are a senior .NET QA engineer.
-  > From the Phase 1 analysis and Phase 3 implementation below, produce a
-  > test case matrix with these columns:
-  > | # | Method | Scenario | Input | Expected Output | Type |
-  > Type = Happy Path | Edge Case | Validation | Exception
-  > Do NOT write any C# code yet.
-  >
+  > /dotnet-test-cases
   > [Paste Phase 1 analysis + Phase 3 implementation here]
   > ```
 ```
