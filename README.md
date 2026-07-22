@@ -11,6 +11,7 @@ By utilizing these tools, our writing team can automate the heavy lifting of for
 The toolkit has three layers — **agents** own a job, **skills** are reusable capabilities they call, and **workflows** chain them with human checkpoints. Project-wide conventions live in [`CLAUDE.md`](CLAUDE.md).
 
 * **`.claude/agents/`**: First-class subagents you hand a job to.
+  * `blog-topic-scout.md`: Scouts dev.to/Medium/official sources for angles worth writing and proposes ranked topic ideas.
   * `blog-researcher.md`: Researches the topic online and records sources in `references.md`.
   * `blog-writer.md`: Drafts the SEO-optimized `article.md` with citations.
   * `blog-reviewer.md`: Reviews the draft for style, grammar, and reference completeness.

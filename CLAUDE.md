@@ -6,7 +6,8 @@ Project instructions for writing technical blog posts with AI agents. This is a 
 Produce accurate, scannable, SEO-optimized technical blog articles through a research → draft → review pipeline, with every source tracked and every step recorded.
 
 ## Architecture: agents → skills → workflows
-- **Agents** (`.claude/agents/*.md`) — the three personas you hand a job to. Each owns one phase and calls skills:
+- **Agents** (`.claude/agents/*.md`) — the personas you hand a job to. Each owns one phase and calls skills:
+  - `blog-topic-scout` — surveys dev.to/Medium/official sources and proposes ranked topic ideas (runs *before* a topic is chosen; output in `src/topic-ideas.md`).
   - `blog-researcher` — internet research + `references.md` (verified sources and `[REF-N]` placeholders).
   - `blog-writer` — drafts `article.md` with citations and SEO frontmatter.
   - `blog-reviewer` — edits for style, grammar, and reference completeness.

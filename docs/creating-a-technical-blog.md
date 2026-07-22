@@ -15,6 +15,18 @@ Throughout this guide the running example is a post on Redis caching. Its slug i
 
 ---
 
+## Step 0 — Find a topic (optional)
+
+Have a theme but not a specific post idea? Let the scout survey what the community has already published on **dev.to** and **Medium**, spot the gaps, and propose ranked ideas.
+
+```bash
+@blog-topic-scout Find blog topic ideas around Redis caching for backend developers.
+```
+
+You get a ranked list in `src/topic-ideas.md` — each with a ready-to-use slug, audience, the angle/gap that makes it worth writing, and prior-art links. Pick one and continue to Step 1 (or just run `/create-blog <slug>`).
+
+---
+
 ## Step 1 — Scaffold the topic
 
 Every article gets its own folder so the draft, its sources, its assets, and its progress live together.
