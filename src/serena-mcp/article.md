@@ -3,7 +3,7 @@ title: "Serena MCP: Semantic Code Tools for Smarter AI Coding Agents"
 description: "Serena MCP is a free, open-source server that gives AI coding agents LSP-backed, symbol-level code tools for more reliable, less wasteful edits."
 focus_keyphrase: "Serena MCP"
 keywords: ["Serena MCP", "MCP server", "AI coding agent", "Language Server Protocol", "semantic code tools", "Claude Code"]
-author: ""
+author: "Dang Phan"
 date: "2026-07-22"
 slug: "serena-mcp"
 ---
@@ -22,7 +22,7 @@ Serena (repo `oraios/serena`) is a free, open-source **Model Context Protocol (M
 
 It ships under the **MIT license** — no subscription, no vendor lock-in. [REF-1][REF-4]
 
-**A one-line MCP refresher:** MCP is an open standard from Anthropic, often described as a "USB-C port for AI." It connects AI applications to external tools and data over a JSON-RPC client-server protocol (stdio or HTTP). Serena is one such **server** — your agent (the client) calls the tools Serena exposes. [REF-2]
+**A one-line MCP refresher:** MCP is an open standard from Anthropic — introduced as a way to "build secure, two-way connections between their data sources and AI-powered tools" [REF-7] — and often described as a "USB-C port for AI." It connects AI applications to external tools and data over a JSON-RPC client-server protocol (stdio or HTTP). Serena is one such **server** — your agent (the client) calls the tools Serena exposes. [REF-2]
 
 Where most coding MCP servers such as DesktopCommander or codemcp rely on **text-based** file reading and editing, Serena is distinctive because it works at the **symbol level** — functions, classes, and methods — rather than lines of raw text. [REF-3][REF-1]
 
@@ -141,6 +141,7 @@ Give it a real refactor and watch the difference between an agent that reads cod
 *Sources Consulted:*
 - [REF-1] oraios/serena — A powerful MCP toolkit for coding (official GitHub repo) — https://github.com/oraios/serena
 - [REF-2] What is the Model Context Protocol (MCP)? — official MCP docs — https://modelcontextprotocol.io/introduction
+- [REF-7] Introducing the Model Context Protocol — Anthropic — https://www.anthropic.com/news/model-context-protocol
 - [REF-3] Serena MCP: Free AI Coding Agent with Full Codebase Understanding (2026) — SmartScope — https://smartscope.blog/en/generative-ai/claude/serena-mcp-coding-agent/
 - [REF-4] How to Set Up Serena MCP Server: The Free AI Coding Agent — Apidog — https://apidog.com/blog/serena-mcp-server/
 - [REF-5] How to use AI more efficiently for free (Serena MCP) — DEV Community — https://dev.to/webdeveloperhyper/how-to-use-ai-more-efficiently-for-free-serena-mcp-5gj6
