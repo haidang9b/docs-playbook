@@ -8,28 +8,38 @@ By utilizing these tools, our writing team can automate the heavy lifting of for
 ---
 
 ## 📂 Repository Structure
-This repository is organized into two main sections: the AI Agent Skills and the human-driven workflows.
+The toolkit has three layers — **agents** own a job, **skills** are reusable capabilities they call, and **workflows** chain them with human checkpoints. Project-wide conventions live in [`CLAUDE.md`](CLAUDE.md).
 
-* **`.claude/skills/`**: Contains the executable AI Agent Skills.
-  * `tech-research/`: Agent skill for evaluating sources and extracting technical specs.
-  * `tech-blog-writing/`: Agent skill for drafting SEO-optimized, audience-targeted posts.
-  * `tech-summarization/`: Agent skill utilizing the BLUF method to distill dense docs.
-  * `tech-doc-review/`: Agent skill for grammar, tone, and style guide adherence.
-* **`workflows/`**: Contains Standard Operating Procedures (SOPs) for the writing team.
-  * `create-blog-workflow.md`: Step-by-step guide for drafting technical posts alongside the AI.
+* **`.claude/agents/`**: First-class subagents you hand a job to.
+  * `blog-researcher.md`: Researches the topic online and records sources in `references.md`.
+  * `blog-writer.md`: Drafts the SEO-optimized `article.md` with citations.
+  * `blog-reviewer.md`: Reviews the draft for style, grammar, and reference completeness.
+* **`.claude/skills/`**: The executable AI Agent Skills the agents apply.
+  * `tech-research/`, `tech-blog-writing/`, `tech-doc-review/`, `tech-summarization/`, `tech-image-generation/`, and `reference-management/` (the shared `[REF-N]` citation convention).
+* **`.claude/workflows/`**: Standard Operating Procedures for the writing team.
+  * `create-blog-workflow.md`: End-to-end guide for drafting technical posts alongside the agents.
+* **`src/<topic-slug>/`**: One self-contained folder per article — `STATE.md` (progress tracker), `article.md`, `references.md`, and `assets/`. Copy `src/_template/` to start a new topic.
 
 ---
 
-## 🚀 How to Use These Skills
+## 🚀 How to Use This Toolkit
 
-These skills are designed to be run locally using the Claude CLI (Claude Code) or via the Claude Agent SDK. The AI will automatically read the `SKILL.md` files in the `.claude/skills/` directory to understand your intent.
+Run locally using the Claude CLI (Claude Code) or the Claude Agent SDK. The AI auto-discovers the agents in `.claude/agents/` and the `SKILL.md` files in `.claude/skills/`.
 
-### 1. Auto-Discovery
-You can interact with the agent naturally. It will read the metadata of our custom skills and apply them when relevant.
-> **Example:** *"Please review the new API documentation draft for style guide adherence."* (This automatically triggers the `tech-doc-review` skill).
+### 1. Run the command
+The fastest path — `/create-blog` scaffolds the topic folder and drives research → draft → review, pausing at each human checkpoint:
+> **Example:** `/create-blog cache-aside vs write-through in Redis 7 for intermediate backend devs`
 
-### 2. Explicit Triggering
-If you want to force the agent to use a specific workflow, use the slash command corresponding to the skill's directory name:
+### 2. Or follow the workflow manually
+Start a topic from `src/_template/`, then walk `create-blog-workflow.md` phase by phase, handing each phase to its agent:
+> **Example:** `@blog-researcher Research the topic in src/caching-strategies-redis/ and record sources in references.md.`
+
+### 3. Auto-Discovery
+You can also interact naturally; the agent applies the relevant skill when appropriate.
+> **Example:** *"Please review the new API documentation draft for style guide adherence."* (triggers `tech-doc-review`).
+
+### 4. Explicit Triggering
+To force a specific skill, use the slash command matching its directory name:
 > **Example:** `/tech-summarization Read the attached whitepaper and provide a BLUF summary with a table of key features.`
 
 ---
@@ -44,5 +54,7 @@ To get the most out of this toolkit, keep the following rules in mind:
 ---
 
 ## 🔗 Related Resources
+* [How to Create a Technical Blog Post](docs/creating-a-technical-blog.md) — step-by-step walkthrough with a worked example.
+* [Project conventions (CLAUDE.md)](CLAUDE.md)
 * [Official Claude Agent Skills Documentation](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 * [Our Corporate Style Guide] *(Link your internal style guide here)*

@@ -14,6 +14,8 @@ When drafting a technical blog post, adhere to the following workflow:
 4. **Code Integration:** If the post involves code, provide clean, well-commented code blocks with the correct language tags for syntax highlighting.
 5. **SEO Optimization:** Naturally weave the topic's primary keywords into the `H1`, at least one `H2`, and the first 100 words.
 6. **Call to Action (CTA):** Conclude every post with a clear next step (e.g., "Check out the official docs," "Clone the repository").
+7. **Citations:** Follow the `reference-management` skill — cite every factual claim with an inline `[REF-N]` marker matching an entry in the topic's `references.md`. Never fabricate a URL; if a source is missing, cite the `[REF-N] TODO` placeholder as-is.
+8. **Output location & frontmatter:** Write the article to `src/<topic-slug>/article.md`. Include YAML frontmatter with `title`, `description`, `focus_keyphrase`, `keywords` (array whose first element equals `focus_keyphrase`), `author: ""`, `date` (`YYYY-MM-DD`), and `slug`. Separate major `H2` sections with `---`, and end with a `*Sources Consulted:*` block mirroring the confirmed references.
 
 ## Examples
 **User Request:** "Write a blog post about how to use the fetch API in JavaScript."

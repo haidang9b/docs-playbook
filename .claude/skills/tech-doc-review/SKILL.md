@@ -12,7 +12,8 @@ When reviewing provided documentation, conduct a multi-layered edit:
    - Eliminate idioms or culturally specific metaphors that could confuse international readers.
 3. **Copyediting:** Fix spelling, grammar, syntax, and punctuation errors.
 4. **Code & Link Validation:** Flag any code snippets that appear to have syntax errors or missing dependencies. 
-5. **Feedback Delivery:** Provide a revised version of the text, followed by a bulleted "Reviewer Notes" section explaining *why* the changes were made, so the user can learn from the edits.
+5. **Reference Completeness:** Cross-check every inline `[REF-N]` marker against the topic's `references.md`. Flag any marker whose source is still a `TODO` placeholder, and any orphaned marker with no matching entry — these are publish blockers per the `reference-management` skill.
+6. **Feedback Delivery:** Provide a revised version of the text, followed by a bulleted "Reviewer Notes" section explaining *why* the changes were made, so the user can learn from the edits.
 
 ## Examples
 **User Request:** "Review this draft of our new installation guide: 'The button should be clicked by the user to start the download.'"

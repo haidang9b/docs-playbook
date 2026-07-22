@@ -9,8 +9,8 @@ When instructed to research a topic, follow these steps systematically:
 1. **Source Evaluation:** Prioritize official documentation, primary source code, and verified academic/technical papers. Discard outdated or unverified secondary sources.
 2. **Targeted Extraction:** Identify the specific constraints of the user's request (e.g., version numbers, specific frameworks). Extract only data relevant to those constraints.
 3. **Data Synthesis:** Cross-reference multiple sources to identify consensus, contradictions, or overarching narratives.
-4. **Structured Output:** Present your findings using structured Markdown. Always include a "Sources Consulted" section at the bottom with explicit links or references.
-5. **Acknowledge Knowledge Gaps:** If a technical detail is undocumented or cannot be verified, explicitly state this rather than hallucinating an answer.
+4. **Structured Output:** Present your findings using structured Markdown. When working a blog topic, write them to `src/<topic-slug>/references.md` using the `reference-management` skill's convention — a short synthesis followed by a `[REF-N]` list of confirmed sources and `TODO` placeholders. Otherwise, always include a "Sources Consulted" section at the bottom with explicit links or references.
+5. **Acknowledge Knowledge Gaps:** If a technical detail is undocumented or cannot be verified, explicitly state this rather than hallucinating an answer. Record the gap as a `[REF-N] TODO: verify` placeholder rather than inventing a source.
 
 ## Examples
 **User Request:** "Research the differences between App Router and Pages Router in Next.js 14."
